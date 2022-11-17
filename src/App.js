@@ -1,49 +1,65 @@
 import logo from './logo.svg';
 import './App.css';
 import Nav from './view/Nav';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Todo from './view/Todo';
+import Covid from './view/Covid';
 
 const App = () => {
-  const [name, setName] = useState('Minh')
+  const [name, setName] = useState('Minh');
   const [address, setAddress] = useState('');
   const [todos, setTodos] = useState([
-    { id: 'todo1', title: 'Watching youtube' },
-    { id: 'todo2', title: 'Doing homework' },
-    { id: 'todo3', title: 'Playing game' }
+    { id: 'todo1', title: 'Watching youtube', type: 'Minh' },
+    { id: 'todo2', title: 'Doing homework', type: 'Long' },
+    { id: 'todo3', title: 'Playing game', type: 'Khanh' },
+    { id: 'todo4', title: 'Learning reactJS', type: 'Hoang' }
   ]);
+
+  useEffect(() => {
+
+  }, []);
 
   const handleOnChangeInput = (event) => {
     setAddress(event.target.value)
   }
+
   const handleEventClick = () => {
     if (!address) {
       alert('emtpy input')
       return;
     }
-    let newTodo = { id: '', title: address }
+    let newTodo = {
+      id: 'todo' + Math.floor((Math.random() * 1000) + 1),
+      title: address,
+      type: 'Minh'
+    }
     setTodos([...todos, newTodo]);
     setAddress('');
   }
 
+  const deleteDataTodo = (id) => {
+    let currentTodos = todos;
+    currentTodos = todos.filter(item => item.id !== id)
+    setTodos(currentTodos)
+  }
+
   return (
     <div className="App">
-      <Nav />
       <header className="App-header">
+        <Nav />
         <img src={logo} className="App-logo" alt="logo" />
         <h1>Xin chào {name}</h1>
-        <div className='todo-container'>
-          {todos.map(todo => {
-            return (
-              <li
-                className='todo-child'
-                style={{ textAlign: 'left' }}
-                key={todo.id}
-              >
-                {todo.title}
-              </li>
-            )
-          })}
-        </div>
+        <Covid />
+        {/* <Todo
+          todos={todos}
+          title='All Todos'
+          deleteDataTodo={deleteDataTodo}
+        />
+        <Todo
+          todos={todos.filter(item => item.type === 'Minh')}
+          title={`Minh's todos`}
+          deleteDataTodo={deleteDataTodo}
+        />
         <input
           type='text'
           value={address}
@@ -53,7 +69,7 @@ const App = () => {
           type='button'
           onClick={handleEventClick}>
           Click me
-        </button>
+        </button> */}
       </header >
     </div >
   );
